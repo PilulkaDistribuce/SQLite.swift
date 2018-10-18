@@ -122,7 +122,7 @@ extension Int : Number, Value {
     public static var declaredDatatype = Int64.declaredDatatype
 
     public static func fromDatatypeValue(_ datatypeValue: Int64) -> Int {
-        return Int(datatypeValue)
+        return Int(exactly: datatypeValue) ?? 0
     }
 
     public var datatypeValue: Int64 {
