@@ -238,12 +238,12 @@ extension Statement : CustomStringConvertible {
 
 public struct Cursor {
 
-    fileprivate let handle: OpaquePointer
+    fileprivate let handle: OpaquePointer?
 
     fileprivate let columnCount: Int
 
     fileprivate init(_ statement: Statement) {
-        handle = statement.handle!
+        handle = statement.handle
         columnCount = statement.columnCount
     }
 
@@ -256,7 +256,8 @@ public struct Cursor {
     }
 
     public subscript(idx: Int) -> String {
-        return String(cString: UnsafePointer(sqlite3_column_text(handle, Int32(idx))))
+        let cString = sqlite3_column_text(handle, Int32(idx))
+        return cString != nil ? String(cString: UnsafePointer(cString!)) : ""
     }
 
     public subscript(idx: Int) -> Blob {
